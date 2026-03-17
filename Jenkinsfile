@@ -21,9 +21,11 @@ pipeline {
                 echo "Running JUnit tests..."
                 cd "Password Protection"
 
-                if [ ! -f junit-platform-console-standalone.jar ]; then
-                    curl -L -o junit-platform-console-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar
-                fi
+                # DELETE OLD/CORRUPT JAR (IMPORTANT)
+                rm -f junit-platform-console-standalone.jar
+
+                echo "Downloading JUnit..."
+                curl -L -o junit-platform-console-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar
 
                 mkdir -p test-build
 
@@ -32,6 +34,8 @@ pipeline {
                 java -jar junit-platform-console-standalone.jar \
                 --class-path build:test-build \
                 --scan-class-path
+
+                echo "JUnit tests executed successfully"
                 '''
             }
         }
